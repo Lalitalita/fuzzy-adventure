@@ -1,0 +1,52 @@
+<!doctype html>
+<html lang="fr">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>OPNsense SOC</title>
+<link rel="stylesheet" href="style.css">
+</head>
+<body>
+<header>
+  <h1>🛡️ OPNsense SOC</h1>
+  <div id="conn" class="pill">connexion…</div>
+  <div id="meta" class="muted"></div>
+</header>
+
+<section class="kpis" id="kpis"></section>
+
+<section class="grid">
+  <div class="card wide">
+    <h2>Blocages / minute (60 min)</h2>
+    <svg id="timeline" viewBox="0 0 600 120" preserveAspectRatio="none"></svg>
+  </div>
+  <div class="card">
+    <h2>Top ports ciblés (24h)</h2>
+    <div id="ports"></div>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Sources (1h) — détection tryhard <span class="muted">cliquer une ligne pour le détail</span></h2>
+  <table id="sources"><thead><tr><th>IP</th><th>Verdict</th><th>Score</th><th>Blocages</th><th>Ports</th><th>Cibles</th><th>Top ports</th><th>Dernier</th></tr></thead><tbody></tbody></table>
+</section>
+
+<section class="grid">
+  <div class="card">
+    <h2>Flux en direct</h2>
+    <table id="recent"><thead><tr><th>Heure</th><th>Source</th><th>→ Destination</th><th>Proto</th></tr></thead><tbody></tbody></table>
+  </div>
+  <div class="card">
+    <h2>Alertes IDS (Suricata)</h2>
+    <table id="ids"><thead><tr><th>Heure</th><th>Source</th><th>Signature</th><th>Sév.</th></tr></thead><tbody></tbody></table>
+  </div>
+</section>
+
+<section class="card">
+  <h2>Vulnérabilités <button id="audit">Lancer l'audit</button></h2>
+  <div id="fw" class="muted"></div>
+  <div id="vulns"></div>
+</section>
+<script src="app.js"></script>
+</body>
+</html>
