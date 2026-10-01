@@ -35,7 +35,7 @@ else:
 store = Store(wan=csv(env.get("WAN_INTERFACES")), ignore=csv(env.get("IGNORE_SRC")))
 state = {
     "status": {"ok": False, "error": "démarrage…", "lastPoll": 0},
-    "system": None, "firmware": None,
+    "system": None, "firmware": None, "warnings": {},
     "vulns": {"running": False, "lastRun": 0, "error": None, "items": []},
 }
 clients: set[asyncio.Queue] = set()
@@ -67,7 +67,12 @@ async def poll_firewall():
 async def poll_slow():
     ids, sys_, fw = await asyncio.gather(
         opn.get_ids_alerts(), opn.get_system(), opn.get_firmware_status(), return_exceptions=True)
-    if not isinstance(ids, Exception):  # Suricata absent => 404, on ignore
+    warnings = {}
+    for name, res in (("IDS", ids), ("Système", sys_), ("Firmware", fw)):
+        if isinstance(res, Exception):
+            warnings[name] = str(res) or type(res).__name__
+    state["warnings"] = warnings
+    if not isinstance(ids, Exception):
         store.set_ids(ids)
     if not isinstance(sys_, Exception):
         state["system"] = sys_

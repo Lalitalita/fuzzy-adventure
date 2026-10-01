@@ -13,6 +13,8 @@ function render(d) {
   $('#conn').className = 'pill ' + (d.status.ok ? 'ok' : 'ko');
   $('#meta').textContent = [d.mock && 'MODE DÉMO', d.status.error, d.firmware?.product_version && `v${d.firmware.product_version}`].filter(Boolean).join(' · ');
 
+  $('#warn').innerHTML = Object.entries(d.warnings || {}).map(([k, v]) => `⚠ ${esc(k)} : ${esc(v)}`).join('<br>');
+
   const k = d.kpi;
   const tiles = [['Blocages 5 min', k.blocked5m], ['Blocages 1 h', k.blocked1h], ['Blocages 24 h', k.blocked24h], ['IP uniques (1h)', k.uniqueIps1h],
     ['Tryhard', k.tryhard, 'var(--red)'], ['Suspects', k.suspect, 'var(--org)'], ['Alertes IDS (1h)', k.idsAlerts1h]];
